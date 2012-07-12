@@ -15,6 +15,16 @@ In PhoneGap
 * Skip build deploys.
 
 
+Steps:
+mkdir code
+mkdir ios
+cd ios
+/path/to/phonegap-1.9.0/lib/ios/bin/create GExplore com.jrburke.GExplore GExplore
+cd com.jrburke.GExplore
+brew install ios-sim
+vi cordova/debug, replace $PROJECT_NAME with GExplore
+cordova/debug
+
 
 
 
