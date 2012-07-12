@@ -1,0 +1,24 @@
+/Users/jr/git/talks/phonegap/code/android/GExplore/gen/com/jrburke/GExplore/R.java \
+ : /Users/jr/git/talks/phonegap/code/android/GExplore/res/drawable/icon.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/res/drawable-hdpi/ic_launcher.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/res/drawable-hdpi/icon.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/res/drawable-ldpi/ic_launcher.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/res/drawable-ldpi/icon.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/res/drawable-mdpi/ic_launcher.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/res/drawable-mdpi/icon.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/res/drawable-xhdpi/ic_launcher.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/res/drawable-xhdpi/icon.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/res/layout/main.xml \
+/Users/jr/git/talks/phonegap/code/android/GExplore/res/values/strings.xml \
+/Users/jr/git/talks/phonegap/code/android/GExplore/res/xml/cordova.xml \
+/Users/jr/git/talks/phonegap/code/android/GExplore/res/xml/plugins.xml \
+/Users/jr/git/talks/phonegap/code/android/GExplore/bin/res/drawable/icon.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/bin/res/drawable-hdpi/ic_launcher.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/bin/res/drawable-hdpi/icon.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/bin/res/drawable-ldpi/ic_launcher.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/bin/res/drawable-ldpi/icon.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/bin/res/drawable-mdpi/ic_launcher.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/bin/res/drawable-mdpi/icon.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/bin/res/drawable-xhdpi/ic_launcher.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/bin/res/drawable-xhdpi/icon.png \
+/Users/jr/git/talks/phonegap/code/android/GExplore/bin/AndroidManifest.xml \
