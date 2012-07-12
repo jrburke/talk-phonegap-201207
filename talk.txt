@@ -31,8 +31,14 @@ cd android
 /path/to/phonegap-1.9.0/lib/android/bin/create GExplore com.jrburke.GExplore GExplore
 cd ..
 mkdir -p www/js/lib
+[create project from volojs/create-template]
+cd www/js/lib
+mkdir android ios web
+cp ../../../ios/GExplore/www/cordova-1.9.0.js ios/cordova.js
+cp ../../../android/GExplore/assets/www/cordova-1.9.0.js android/cordova.js
+touch web/cordova.js
 
-
+change index.html to be the one in this repo, with app/main.js doing a require('env!cordova');
 
 
 

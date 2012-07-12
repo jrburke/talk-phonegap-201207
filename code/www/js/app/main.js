@@ -1,8 +1,15 @@
-define(function (require) {
-    // Load any app-specific modules
-    // with a relative require call,
-    // like:
-    // var util = require('./util');
 
-    console.log('Hello world');
+/*global define, console, document, navigator */
+
+define(function (require) {
+    'use strict';
+
+    var $ = require('jquery'),
+        cordova = require('env!cordova');
+
+    $(function () {
+        document.addEventListener("deviceready", function () {
+            navigator.notification.alert("Cordova is working");
+        }, false);
+    });
 });

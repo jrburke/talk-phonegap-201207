@@ -4,6 +4,10 @@ define(function (require) {
     'use strict';
 
     return {
+        android: [
+            'v.copyDir www android/GExplore/assets/www',
+            'android/GExplore/cordova/debug'
+        ],
         build: {
             flags: {
                 //Does not print the build output.
