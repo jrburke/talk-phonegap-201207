@@ -26,7 +26,11 @@ vi cordova/debug, replace $PROJECT_NAME with GExplore
 cordova/debug
 
 
-
+mkdir android
+cd android
+/path/to/phonegap-1.9.0/lib/android/bin/create GExplore com.jrburke.GExplore GExplore
+cd ..
+mkdir -p www/js/lib
 
 
 
