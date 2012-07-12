@@ -7,9 +7,12 @@ define(function (require) {
     var $ = require('jquery'),
         cordova = require('env!cordova');
 
+    //Dependencies that do not have a module value
+    require('cordovaReload');
+
     $(function () {
         document.addEventListener("deviceready", function () {
-            navigator.notification.alert("Cordova is working");
+            navigator.notification.alert("Cordova is working: " + location.href);
         }, false);
     });
 });
