@@ -1,0 +1,58 @@
+20 minutes
+
+
+RequireJS
+* Implements AMD, aims to be reference spec, try to cover the most cases.
+* almond, an AMD API shim, great for builds, 1KB minified/gzipped.
+
+In PhoneGap
+
+* phonegap.js uses AMD for their wrapping
+* almond and require.js give different optimization strategies.
+    * almond: single "main", all in one JS file
+    * require.js: multiple views, staged loading. The best performance is not loading JS.
+* loader plugins for env.
+* Skip build deploys.
+
+
+
+
+
+
+
+
+
+
+
+requirejs
+
+Handling JavaScript
+
+Explain why it exists
+
+Other options
+- commonjs
+  * loader plugins
+  * callback require
+  * wrapped format: insurance. Works everywhere
+
+Size
+- more granular
+
+
+
+--------------
+Who
+jrburke
+
+
+What
+JS module loader.
+
+It treats
+
+Why
+
+Where
+
+How

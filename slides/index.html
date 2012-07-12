@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+
+        <title>RequireJS + PhoneGap</title>
+
+        <meta name="description" content="">
+        <meta name="author" content="James Burke">
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/print.css" type="text/css" media="print">
+
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <!-- Used to fade in a background when a specific slide state is reached -->
+            <div class="state-background"></div>
+
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section>
+                    <h1 style="font-size: 120px">RequireJS + PhoneGap</h1>
+                    <p class="inverted">James Burke | @jrburke - twitter, github</p>
+                    <script>
+                        // Delicously hacky. Look away.
+                        if( navigator.userAgent.match( /(iPhone|iPad|iPod|Android)/i ) ) document.write( '<p style="color: rgba(0,0,0,0.3); text-shadow: none;">('+'Tap to navigate'+')</p>' );
+                    </script>
+                </section>
+
+                <section data-state="alert">
+                    <h2>The great sadness</h2>
+
+                    <p>You are the linker, browser only, disparate automation</p>
+
+                    <pre><code style="font-size: smaller">
+&lt;script src="../js/JQuery.js"&gt;&lt;/script&gt;
+&lt;script src="../js/SwfObject.js"&gt;&lt;/script&gt;
+&lt;script src="../js/JsLib.js"&gt;&lt;/script&gt;
+&lt;script src="../js/Utils.js"&gt;&lt;/script&gt;
+&lt;script src="../js/Validation.js"&gt;&lt;/script&gt;
+&lt;script src="../js/Personal.js"&gt;&lt;/script&gt;
+&lt;script src="../js/SpecialFeatures.js"&gt;&lt;/script&gt;
+&lt;script src="../js/Basket.js"&gt;&lt;/script&gt;
+&lt;script src="../js/Catalog.js"&gt;&lt;/script&gt;
+&lt;script src="../js/Marketing.js"&gt;&lt;/script&gt;
+                    </code></pre>
+
+                    <aside class="notes">
+                        <ul>
+                            <li>Unclear what relates to each other, dependencies</li>
+                            <li>Dynamic loading</li>
+                            <li>Optimization story</li>
+                        </ul>
+                    </aside>
+                </section>
+
+                <section data-state="alert">
+
+                    <h2>The great sadness</h2>
+
+                    <p>Indirect dependencies, wordier, async APIs</p>
+
+                    <pre><code style="font-size: smaller">(function (global) {
+    var tp = $.get('View.html').then(function (text) {
+            return _.template(text);
+        });
+
+    function View(node) {
+        this.node = node;
+    });
+
+    View.prototype = {
+        render: function (data) {
+            return tp.then(function (template) {
+                this.node.innerHTML = template(data);
+            });
+        }
+    };
+
+    global.View = View;
+}(this));</code></pre>
+
+                    <aside class="notes">
+                        <ul>
+                            <li>Unclear what relates to each other, dependencies</li>
+                            <li>Not clear what file provided these objects, and the ones are self named.</li>
+                            <li>The async nature of acquiring non-JS dependencies</li>
+                        </ul>
+                    </aside>
+                </section>
+
+                <section data-state="soothe">
+                    <h2>AMD</h2>
+
+                    <p>Direct refs, simpler APIs for your modules</p>
+
+                    <pre><code style="font-size: smaller">define(['jquery', 'underscore', 'text!./View.html'], function ($, _, text) {
+    var template = _.template(text);
+
+    function View(node) {
+        this.node = node;
+    }
+
+    View.prototype = {
+        render: function (data) {
+            this.node.innerHTML = template(data);
+        }
+    };
+
+    return View;
+});</code></pre>
+
+                </section>
+
+                <section data-state="soothe">
+                    <h2>AMD</h2>
+
+                    <p>With a template loader plugin, does compile for you</p>
+
+                    <pre><code style="font-size: smaller">define(['jquery', 'underscore', 'tpl!./View.html'], function ($, _, template) {
+    function View(node) {
+        this.node = node;
+    }
+
+    View.prototype = {
+        render: function (data) {
+            this.node.innerHTML = template(data);
+        }
+    };
+
+    return View;
+});</code></pre>
+
+                </section>
+
+                <section data-state="soothe">
+                    <h2>AMD</h2>
+
+                    <p>CommonJS sugar</p>
+
+                    <pre><code style="font-size: smaller">define(function (require) {
+
+    var $ = require('jquery'),
+        _ = require('underscore'),
+        template = require('tpl!./View.html');
+
+    function View(node) {
+        this.node = node;
+    }
+
+    View.prototype = {
+        render: function (data) {
+            this.node.innerHTML = template(data);
+        }
+    };
+
+    return View;
+});</code></pre>
+
+                </section>
+
+                <section data-state="soothe">
+                    <h2>AMD</h2>
+
+                    <p>Cleaner HTML, easier build automation</p>
+
+                    <pre><code style="font-size: smaller">&lt;script data-main="main" src="require.js"&gt;&lt;/script&gt;</code></pre>
+
+                </section>
+
+
+                <section data-state="soothe">
+                    <h2>AMD, automated build</h2>
+
+                    <pre><code style="font-size: smaller">define('text', function () {
+    //Can be empty does not need to load text after build
+});
+
+define('text!View.html', function () {
+    return '&lt;h1&gt;Hello &lt;%= name %&gt;&lt;/h1&gt;';
+});
+
+define('View', ['jquery', 'underscore', 'text!./View.html'],
+function ($, _, template) {
+    function View(node) {
+        this.node = node;
+    }
+
+    View.prototype = {
+        render: function (data) {
+            this.node.innerHTML = template(data);
+        }
+    };
+
+    return View;
+});</code></pre>
+
+                </section>
+
+                <section data-state="soothe">
+                    <h2>AMD</h2>
+
+                    <p>Explicit APIs lead to automated tooling, package managers?</p>
+                </section>
+
+
+                <section>
+                    <h2>Holistic Overview</h2>
+                    <p>
+                        Press <strong>ESC</strong> to enter the slide overview!
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Works in Mobile Safari</h2>
+                    <p>
+                        Try it out! You can swipe through the slides pinch your way to the overview.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Transition Styles</h2>
+                    <p>
+                        You can select from different transitions, like:
+                    </p>
+                    <ul>
+                        <li><a href="http://lab.hakim.se/reveal-js/?transition=cube">Cube</a></li>
+                        <li><a href="http://lab.hakim.se/reveal-js/?transition=page">Page</a></li>
+                        <li><a href="http://lab.hakim.se/reveal-js/?transition=concave">Concave</a></li>
+                        <li><a href="http://lab.hakim.se/reveal-js/?transition=linear">Linear</a></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Marvelous Unordered List</h2>
+                    <ul>
+                        <li>No order here</li>
+                        <li>Or here</li>
+                        <li>Or here</li>
+                        <li>Or here</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Fantastic Ordered List</h2>
+                    <ol>
+                        <li>One is smaller than...</li>
+                        <li>Two is smaller than...</li>
+                        <li>Three!</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <section data-state="alert">
+                        <h2>Global State</h2>
+                        <p>
+                            Set <code>data-state="something"</code> on a slide and <code>"something"</code>
+                            will be added as a class to the document element when the slide is open. This let's you
+                            apply broader style changes, like switching the background.
+                        </p>
+                        <a href="#/7/1" class="image">
+                            <img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png">
+                        </a>
+                    </section>
+                    <section data-state="blackout">
+                        <h2>"blackout"</h2>
+                        <a href="#/7/2" class="image">
+                            <img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png">
+                        </a>
+                    </section>
+                    <section data-state="soothe">
+                        <h2>"soothe"</h2>
+                        <a href="#/7/0" class="image">
+                            <img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" style="-webkit-transform: rotate(180deg);">
+                        </a>
+                    </section>
+                </section>
+
+                <section data-state="customevent">
+                    <h2>Custom Events</h2>
+                    <p>
+                        Additionally custom events can be triggered on a per slide basis by binding to the <code>data-state</code> name.
+                    </p>
+                    <pre><code contenteditable style="font-size: 18px; margin-top: 20px;">Reveal.addEventListener( 'customevent', function() {
+    alert( '"customevent" has fired' );
+} );
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Clever Quotes</h2>
+                    <p>
+                        These guys come in two forms, inline: <q cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
+                        The nice thing about standards is that there are so many to choose from</q> and block:
+                    </p>
+                    <blockquote cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
+                        For years there has been a theory that millions of monkeys typing at random on millions of typewriters would
+                        reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.
+                    </blockquote>
+                </section>
+
+                <section>
+                    <h2>Pretty Code</h2>
+                    <pre><code contenteditable>
+function linkify( selector ) {
+  if( supports3DTransforms ) {
+
+    var nodes = document.querySelectorAll( selector );
+
+    for( var i = 0, len = nodes.length; i < len; i++ ) {
+      var node = nodes[i];
+
+      if( !node.className ) ) {
+        node.className += ' roll';
+      }
+    };
+  }
+}
+                    </code></pre>
+                    <p>Courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
+                </section>
+
+                <section>
+                    <h2>Intergalactic Interconnections</h2>
+                    <p>
+                        You can link between slides internally,<br/>
+                        <a href="#/2/3">like this</a>.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Fragmented Views</h2>
+                    <p>Hit the next arrow...</p>
+                    <p class="fragment">... to step through ...</p>
+                    <ol>
+                        <li class="fragment"><code>any type</code></li>
+                        <li class="fragment"><em>of view</em></li>
+                        <li class="fragment"><strong>fragments</strong></li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h2>Spectacular image!</h2>
+                    <a class="image" href="http://hakim.se/experiments/html5/breakdom/" target="_blank">
+                        <img width="320" height="412" src="https://s3.amazonaws.com/hakim-static/reveal-js/breakdom.png">
+                    </a>
+                </section>
+
+                <section>
+                    <h2>Stellar Links</h2>
+                    <ul>
+                        <li><a href="https://github.com/hakimel/reveal.js">Source code on github</a></li>
+                        <li><a href="http://hakim.se/projects/reveal-js">Read more on my site</a></li>
+                        <li><a href="http://twitter.com/hakimel">Follow me on Twitter</a></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h1>THE END</h1>
+                    <h3 class="inverted">BY Hakim El Hattab / hakim.se</h3>
+                </section>
+            </div>
+
+            <!-- The navigational controls UI -->
+            <aside class="controls">
+                <a class="left" href="#">&#x25C4;</a>
+                <a class="right" href="#">&#x25BA;</a>
+                <a class="up" href="#">&#x25B2;</a>
+                <a class="down" href="#">&#x25BC;</a>
+            </aside>
+
+            <!-- Displays presentation progress, max value changes via JS to reflect # of slides -->
+            <div class="progress"><span></span></div>
+
+        </div>
+
+        <!-- Optional libraries for code syntax highlighting and classList support in IE9 -->
+        <script src="lib/js/head.min.js"></script>
+
+        <script>
+            // Load the main reveal.js script
+            head.js( 'js/reveal.js', function() {
+                // Parse the query string into a key/value object
+                var query = {};
+
+                location.search.replace( /[A-Z0-9]+?=(\w*)/gi, function(a) {
+                    query[ a.split( '=' ).shift() ] = a.split( '=' ).pop();
+                } );
+
+                // Fires when a slide with data-state=customevent is activated
+                Reveal.addEventListener( 'customevent', function() {
+                    alert( '"customevent" has fired' );
+                } );
+
+                // Fires each time a new slide is activated
+                Reveal.addEventListener( 'slidechanged', function( event ) {
+                    // event.previousSlide, event.currentSlide, event.indexh, event.indexv
+                } );
+
+                Reveal.initialize({
+                    // Display controls in the bottom right corner
+                    controls: true,
+
+                    // Display a presentation progress bar
+                    progress: true,
+
+                    // If true; each slide will be pushed to the browser history
+                    history: true,
+
+                    // Loops the presentation, defaults to false
+                    loop: false,
+
+                    // Flags if mouse wheel navigation should be enabled
+                    mouseWheel: true,
+
+                    // Apply a 3D roll to links on hover
+                    rollingLinks: true,
+
+                    // UI style
+                    theme: query.theme || 'default', // default/neon
+
+                    // Transition style
+                    transition: query.transition || 'default' // default/cube/page/concave/linear(2d)
+                });
+            } );
+
+            // Load third party scripts
+            head.js( 'lib/js/classList.js' );
+            head.js( 'lib/js/highlight.js', function() {
+                // Fire off syntax highlighting for potential code samples in the slides
+                hljs.initHighlightingOnLoad();
+            } );
+
+            // If we're runnning the notes server we need to include some additional JS
+            // TODO Is there a better way to determine if we're running the notes server?
+            if( window.location.host === 'localhost:1947' ) {
+                head.js( 'socket.io/socket.io.js', 'plugin/speakernotes/client.js' );
+            }
+        </script>
+
+    </body>
+</html>
