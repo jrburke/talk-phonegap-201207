@@ -46,6 +46,7 @@ define(function (require) {
                     //Copy original files back over.
                     v.copyFile(tempDir + '/' + sourcePrefix, sourcePrefix);
                     v.copyFile(tempDir + '/' + xmlPrefix, xmlPrefix);
+                    v.rm(tempDir);
                 }
                 return value;
             }

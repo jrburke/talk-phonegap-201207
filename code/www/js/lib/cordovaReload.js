@@ -14,6 +14,13 @@ define(function (require) {
         bustRegExp = /cacheBust=\d+/,
         href = location.href.replace(bustRegExp, '');
 
+    function clear() {
+        if (reloadId) {
+            clearTimeout(reloadId);
+            reloadId = 0;
+        }
+    }
+
     document.addEventListener("touchstart", function (evt) {
         if (!reloadId) {
             reloadId = setTimeout(function () {
@@ -27,12 +34,6 @@ define(function (require) {
         }
     }, false);
 
-    document.addEventListener("touchend", function (evt) {
-        if (reloadId) {
-            clearTimeout(reloadId);
-            reloadId = 0;
-        }
-    }, false);
-
-
+    document.addEventListener("touchend", clear, false);
+    document.addEventListener("touchmove", clear, false);
 });
