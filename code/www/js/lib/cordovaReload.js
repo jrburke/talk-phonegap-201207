@@ -24,7 +24,7 @@ define(function (require) {
     document.addEventListener("touchstart", function (evt) {
         if (!reloadId) {
             reloadId = setTimeout(function () {
-                if (window.confirm('Dev reload?')) {
+                if (window.confirm('Dev reload?\n' + href)) {
                     location.replace(href +
                                      (href.indexOf('?') === -1 ? '?' : '') +
                                      'cacheBust=' + (new Date()).getTime());

@@ -5,10 +5,13 @@ define(function (require) {
     'use strict';
 
     var tempDir = 'temp',
-        androidBase = 'android/GExplore/',
         reverseDomain = 'com.jrburke.GExplore',
         reverseSuffix = reverseDomain.split('.').pop(),
-        reverseDomainPath = reverseDomain.replace(/\./g, '/');
+        reverseDomainPath = reverseDomain.replace(/\./g, '/'),
+
+        androidBase = 'android/GExplore/',
+
+        iosBase = 'ios/GExplore/';
 
     return {
 
@@ -54,6 +57,14 @@ define(function (require) {
             d.resolve(v.shell(androidBase + 'cordova/debug', {
                 useConsole: !namedArgs.quiet
             }).then(cleanUp, cleanUp));
+        },
+
+        ios: function (d, v, namedArgs, url) {
+            v.copyDir('www', iosBase + 'www');
+
+             d.resolve(v.shell(iosBase + 'cordova/debug', {
+                useConsole: !namedArgs.quiet
+            }));
         },
 
         build: {
