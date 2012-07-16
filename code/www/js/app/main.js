@@ -1,11 +1,10 @@
 
-/*global define, console, document, navigator */
+/*global define, console, document, navigator, location */
 
 define(function (require) {
     'use strict';
 
-    var $ = require('jquery'),
-        cordova = require('env!cordova');
+    var $ = require('jquery');
 
     //Dependencies that do not have a module value
     require('cordovaReload');
