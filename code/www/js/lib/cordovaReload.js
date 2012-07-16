@@ -11,7 +11,7 @@ define(function (require) {
     'use strict';
 
     var reloadId,
-        bustRegExp = /cacheBust=\d+/,
+        bustRegExp = /(\?)?cacheBust=\d+/,
         href = location.href.replace(bustRegExp, '');
 
     function clear() {
@@ -25,9 +25,9 @@ define(function (require) {
         if (!reloadId) {
             reloadId = setTimeout(function () {
                 if (window.confirm('Dev reload?\n' + href)) {
-                    location.replace(href +
-                                     (href.indexOf('?') === -1 ? '?' : '') +
-                                     'cacheBust=' + (new Date()).getTime());
+                    href += (href.indexOf('?') === -1 ? '?' : '') +
+                                     'cacheBust=' + (new Date()).getTime();
+                    location.replace(href);
                 }
                 reloadId = 0;
             }, 1337);

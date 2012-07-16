@@ -38,7 +38,7 @@ define(function (require) {
                 contents = v.read(xmlPrefix)
                             .replace(/<access/,
                                      //Remove the port from the url.
-                                     '<access origin="' + url.replace(/(\:\d+)?(\/)?$/, '') + '"/><access');
+                                     '<access origin="' + url.replace(/(\:\d+)?(\/)?.*$/, '') + '"/><access');
 
             } else {
                 v.copyDir('www', androidBase + 'assets/www');
