@@ -13,6 +13,14 @@ define(function (require) {
 
         iosBase = 'ios/GExplore/';
 
+    //Generates an URL that is suitable for use in URL access lists used
+    //by the native platforms. Assumes the URL has a slash after the domain.
+    function accessUrl(url, trimProtocol) {
+        var parts = url.split('/');
+        url = url = parts.slice((trimProtocol ? 2 : 0), 3).join('/');
+        return url.replace(/:\d+$/, '');
+    }
+
     return {
 
         android: function (d, v, namedArgs, url) {
@@ -38,7 +46,7 @@ define(function (require) {
                 contents = v.read(xmlPrefix)
                             .replace(/<access/,
                                      //Remove the port from the url.
-                                     '<access origin="' + url.replace(/(\:\d+)?(\/)?.*$/, '') + '"/><access');
+                                     '<access origin="' + accessUrl(url) + '"/><access');
 
             } else {
                 v.copyDir('www', androidBase + 'assets/www');
@@ -60,11 +68,47 @@ define(function (require) {
         },
 
         ios: function (d, v, namedArgs, url) {
+            var contents,
+                iosIndexPath = iosBase + 'www/index.html',
+                iosPListPath = 'ios/GExplore/GExplore/Cordova.plist';
+
+            //Copy all the directory contents since the redirector.html page
+            //may use some of them.
             v.copyDir('www', iosBase + 'www');
 
-             d.resolve(v.shell(iosBase + 'cordova/debug', {
+            if (url) {
+                //Copy redirector to www/index.html and change it to redirect
+                //to the final location.
+                v.copyFile('www/js/lib/ios/redirector.html', iosIndexPath);
+                v.write(iosIndexPath, v.read(iosIndexPath).replace(/TARGET/g, url));
+
+                //Update the allowed URLs to include the final URL location.
+                v.copyFile(iosPListPath, tempDir + '/' + iosPListPath);
+
+                contents = v.read(iosPListPath);
+
+                contents = contents
+                           //First replace any empty array thing after ExternalHosts
+                           .replace(/<key>ExternalHosts<\/key>\s*<array\/>/, '<key>ExternalHosts</key>')
+                           .replace(/<key>ExternalHosts<\/key>/, '<key>ExternalHosts</key><array><string>' + accessUrl(url, true) + '</string></array>')
+                           //Set Opening of urls in the webview to allow click reloading.
+                           .replace(/<key>OpenAllWhitelistURLsInWebView<\/key>\s*<false\/>/, '<key>OpenAllWhitelistURLsInWebView</key><true/>');
+
+                v.write(iosPListPath, contents);
+            }
+
+            function cleanUp(value) {
+                if (url) {
+                    //Copy original files back over.
+                    v.copyFile(tempDir + '/' + iosPListPath, iosPListPath);
+                    v.rm(tempDir);
+                }
+                return value;
+            }
+
+            d.resolve(v.shell(iosBase + 'cordova/debug', {
                 useConsole: !namedArgs.quiet
-            }));
+            }).then(cleanUp, cleanUp));
         },
 
         build: {

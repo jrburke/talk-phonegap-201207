@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- This file is copied to index.html location, so
+    this path should assume that directory. Also,
+    loading cordova.js here just to make sure first load
+    wiring happens correctly. -->
+<script src="js/lib/ios/cordova.js"></script>
+<script>
+    document.addEventListener("deviceready", function () {
+        location.replace('TARGET');
+    }, false);
+</script>
+</head>
+<body>
+    redirecting...
+</body>
+</html>
