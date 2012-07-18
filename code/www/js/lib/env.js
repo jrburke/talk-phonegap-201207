@@ -4,29 +4,19 @@
  */
 
 /*jslint */
-/*global location, navigator, document, define */
+/*global location, navigator, document, define, phonegapEnv */
 
 /**
  * A plugin that modifies any /env/ path to be the right path based on
  * the host environment. Right now only works for Node, Rhino and browser.
  */
-define(function () {
+define(function (require, exports, module) {
     'use strict';
 
     var pathRegExp = /(\/|^)env\/|\{env\}/,
-        value = 'web',
-        platform = navigator.platform.toLowerCase(),
-        ua = typeof navigator !== 'undefined' && navigator.userAgent;
-
-    //A device installation. Nothing says quality like UA sniffing.
-    //If you know of a better way to do this, speak up.
-    if (platform.indexOf('iphone') !== -1 ||
-            platform.indexOf('ipad') !== -1 ||
-            platform.indexOf('ipod') !== -1) {
-        value = 'ios';
-    } else if (/android/i.test(ua)) {
-        value = 'android';
-    }
+        value = module.config().env ||
+            (typeof phonegapEnv !== 'undefined' && phonegapEnv) ||
+            'web';
 
     function env() {
         return value;

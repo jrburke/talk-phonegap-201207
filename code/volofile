@@ -21,41 +21,55 @@ define(function (require) {
         return url.replace(/:\d+$/, '');
     }
 
+    //Rewrites the global var that contains the env name to be specific
+    //to the given name instead of just 'web'.
+    function updateEnv(text, envName) {
+        return text.replace(/var\s*phonegapEnv\s*=\s*['"][^'"]['"]/,
+                            "var phonegapEnv = '" + envName + "'");
+    }
+
+    function copyRedirector(v, indexPath, env, url) {
+        v.copyFile('www/redirector.html', indexPath);
+
+        v.write(indexPath, v.template(v.read(indexPath), {
+            TARGET: url,
+            ENV: env
+        }));
+    }
+
     return {
 
         android: function (d, v, namedArgs, url) {
-            var sourcePrefix = androidBase + '/src/' +
-                             reverseDomainPath + '/' +
-                             reverseSuffix + '.java',
-                xmlPrefix = androidBase + '/res/xml/cordova.xml',
+            var xmlPrefix = androidBase + 'res/xml/cordova.xml',
+                indexPath = androidBase + 'assets/www/index.html',
                 contents;
 
+
+            //Copy all the directory contents since the redirector.html page
+            //may use some of them.
+            v.copyDir('www', iosBase + 'assets/www');
+
             if (url) {
-                //Want to do live reload editing. Modify android source
-                //files to load the live URL, and allow access to
-                //it in the cordova.xml file.
+                url += '?env=android';
 
-                v.copyFile(sourcePrefix, tempDir + '/' + sourcePrefix);
+                copyRedirector(v, indexPath, 'android', url);
+
+                //Allow access to live reload URL in the cordova.xml file.
                 v.copyFile(xmlPrefix, tempDir + '/' + xmlPrefix);
-
-                contents = v.read(sourcePrefix)
-                            .replace(/super.loadUrl\([^\)]+\)/,
-                                     'super.loadUrl("' + url + '")');
-                v.write(sourcePrefix, contents);
-
                 contents = v.read(xmlPrefix)
                             .replace(/<access/,
                                      //Remove the port from the url.
                                      '<access origin="' + accessUrl(url) + '"/><access');
+                v.write(xmlPrefix, contents);
 
             } else {
-                v.copyDir('www', androidBase + 'assets/www');
+                contents = v.read(indexPath);
+                v.write(indexPath, updateEnv(contents, 'android'));
             }
 
             function cleanUp(value) {
                 if (url) {
                     //Copy original files back over.
-                    v.copyFile(tempDir + '/' + sourcePrefix, sourcePrefix);
                     v.copyFile(tempDir + '/' + xmlPrefix, xmlPrefix);
                     v.rm(tempDir);
                 }
@@ -69,7 +83,7 @@ define(function (require) {
 
         ios: function (d, v, namedArgs, url) {
             var contents,
-                iosIndexPath = iosBase + 'www/index.html',
+                indexPath = iosBase + 'www/index.html',
                 iosPListPath = 'ios/GExplore/GExplore/Cordova.plist';
 
             //Copy all the directory contents since the redirector.html page
@@ -77,10 +91,9 @@ define(function (require) {
             v.copyDir('www', iosBase + 'www');
 
             if (url) {
-                //Copy redirector to www/index.html and change it to redirect
-                //to the final location.
-                v.copyFile('www/js/lib/ios/redirector.html', iosIndexPath);
-                v.write(iosIndexPath, v.read(iosIndexPath).replace(/TARGET/g, url));
+                url += '?env=ios';
+
+                copyRedirector(v, indexPath, 'ios', url);
 
                 //Update the allowed URLs to include the final URL location.
                 v.copyFile(iosPListPath, tempDir + '/' + iosPListPath);
@@ -95,6 +108,9 @@ define(function (require) {
                            .replace(/<key>OpenAllWhitelistURLsInWebView<\/key>\s*<false\/>/, '<key>OpenAllWhitelistURLsInWebView</key><true/>');
 
                 v.write(iosPListPath, contents);
+            } else {
+                contents = v.read(indexPath);
+                v.write(indexPath, updateEnv(contents, 'ios'));
             }
 
             function cleanUp(value) {

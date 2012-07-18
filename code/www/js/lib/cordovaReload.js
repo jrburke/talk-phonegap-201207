@@ -11,7 +11,7 @@ define(function (require) {
     'use strict';
 
     var reloadId,
-        bustRegExp = /(\?)?cacheBust=\d+/,
+        bustRegExp = /([\?\&])?cacheBust=\d+/,
         href = location.href.replace(bustRegExp, '');
 
     function clear() {
@@ -25,7 +25,7 @@ define(function (require) {
         if (!reloadId) {
             reloadId = setTimeout(function () {
                 if (window.confirm('Dev reload?\n' + href)) {
-                    href += (href.indexOf('?') === -1 ? '?' : '') +
+                    href += (href.indexOf('?') === -1 ? '?' : '&') +
                                      'cacheBust=' + (new Date()).getTime();
                     location.replace(href);
                 }

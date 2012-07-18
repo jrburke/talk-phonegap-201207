@@ -11,29 +11,24 @@
 
     <!-- TODO: revisit dynamic loading of cordova.js when its 2.0 is released -->
     <script>
+    //This value replaced when installing into a phonegap built app.
+    var phonegapEnv = 'web';
     (function () {
-        var pathRegExp = /(\/|^)env\/|\{env\}/,
-            value = 'web',
-            platform = navigator.platform.toLowerCase(),
-            ua = typeof navigator !== 'undefined' && navigator.userAgent;
+        var match,
+            envRegExp = /env=([\w\d\\.-_]+)/,
+            match = envRegExp.exec((typeof location !== 'undefined' && location.href.split('?')[1]) || '');
 
-        //A device installation. Nothing says quality like UA sniffing.
-        //If you know of a better way to do this, speak up.
-        if (platform.indexOf('iphone') !== -1 ||
-                platform.indexOf('ipad') !== -1 ||
-                platform.indexOf('ipod') !== -1) {
-            value = 'ios';
-        } else if (/android/i.test(ua)) {
-            value = 'android';
+        if (match && match[1]) {
+            phonegapEnv = match[1];
         }
 
-        document.write('<script src="js/lib/' + value + '/cordova.js">\<\/script>');
+        document.write('<script src="js/lib/' + phonegapEnv + '/cordova.js">\<\/script>');
     }());
     </script>
 
     <script data-main="js/app" src="js/lib/require.js"></script>
 </head>
 <body>
-    <h1>Hello World</h1>
+    <h1>Hello World 2</h1>
 </body>
 </html>

@@ -5,10 +5,11 @@
     this path should assume that directory. Also,
     loading cordova.js here just to make sure first load
     wiring happens correctly. -->
-<script src="js/lib/ios/cordova.js"></script>
+<script src="js/lib/{ENV}/cordova.js"></script>
 <script>
     document.addEventListener("deviceready", function () {
-        location.replace('TARGET');
+        //alert('Redirecting to {TARGET}');
+        location.replace('{TARGET}');
     }, false);
 </script>
 </head>
