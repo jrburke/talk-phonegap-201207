@@ -32,11 +32,45 @@
             <div class="slides">
                 <section>
                     <h1 style="font-size: 120px">RequireJS + PhoneGap</h1>
-                    <p class="inverted">James Burke | @jrburke - twitter, github</p>
+                    <p class="inverted">James Burke | @jrburke - <a href="https://github.com/jrburke">github</a>, <a href="https://twitter.com/jrburke">twitter</a></p>
+                    <p><a href="http://mozilla.com">Mozilla</a>.
+                        <a href="https://mozillalabs.com">Labs</a>.
+                        <a href="https://developer.mozilla.org/en/Apps/">Web Apps</a>.</p>
+                    <img style="background-color: white" src="i/logo.png">
                     <script>
                         // Delicously hacky. Look away.
                         if( navigator.userAgent.match( /(iPhone|iPad|iPod|Android)/i ) ) document.write( '<p style="color: rgba(0,0,0,0.3); text-shadow: none;">('+'Tap to navigate'+')</p>' );
                     </script>
+                </section>
+
+                <section>
+                    <h2>Web all the apps</h2>
+                    <p>Everywhere</p>
+                </section>
+
+                <section>
+                    <h2>Rough edges</h2>
+                </section>
+
+                <section>
+                    <h2>Last mile</h2>
+                    <ul>
+                        <li><a href="http://phonegap.com">Phonegap</a></li>
+                        <li><a href="http://www.mozilla.org/en-US/b2g/">B2G/Firefox OS</a></li>
+                        <li><a href="https://github.com/wavysandbox/install">wavysandbox/install</a></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>First mile</h2>
+                    <ul>
+                        <li><a href="https://github.com/volojs/volo">volo</a></li>
+                        <li><a href="http://requirejs.org/">RequireJS</a>, <a href="https://github.com/amdjs/amdjs-api/wiki">AMD modules</a></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2><a href="http://requirejs.org/docs/whyamd.html">Why AMD</a></h2>
                 </section>
 
                 <section data-state="alert">
@@ -174,7 +208,7 @@
                 <section data-state="soothe">
                     <h2>AMD</h2>
 
-                    <p>Cleaner HTML, easier build automation</p>
+                    <p>Cleaner HTML</p>
 
                     <pre><code style="font-size: smaller">&lt;script data-main="main" src="require.js"&gt;&lt;/script&gt;</code></pre>
 
@@ -182,7 +216,7 @@
 
 
                 <section data-state="soothe">
-                    <h2>AMD, automated build</h2>
+                    <h2>AMD - <a href="http://requirejs.org/docs/optimization.html">Build</a></h2>
 
                     <pre><code style="font-size: smaller">define('text', function () {
     //Can be empty does not need to load text after build
@@ -209,167 +243,61 @@ function ($, _, template) {
 
                 </section>
 
-                <section data-state="soothe">
+                <section>
                     <h2>AMD</h2>
 
-                    <p>Explicit APIs lead to automated tooling, package managers?</p>
-                </section>
+                    <p>Standard format leads to choices</p>
 
-
-                <section>
-                    <h2>Holistic Overview</h2>
-                    <p>
-                        Press <strong>ESC</strong> to enter the slide overview!
-                    </p>
-                </section>
-
-                <section>
-                    <h2>Works in Mobile Safari</h2>
-                    <p>
-                        Try it out! You can swipe through the slides pinch your way to the overview.
-                    </p>
-                </section>
-
-                <section>
-                    <h2>Transition Styles</h2>
-                    <p>
-                        You can select from different transitions, like:
-                    </p>
                     <ul>
-                        <li><a href="http://lab.hakim.se/reveal-js/?transition=cube">Cube</a></li>
-                        <li><a href="http://lab.hakim.se/reveal-js/?transition=page">Page</a></li>
-                        <li><a href="http://lab.hakim.se/reveal-js/?transition=concave">Concave</a></li>
-                        <li><a href="http://lab.hakim.se/reveal-js/?transition=linear">Linear</a></li>
+                        <li><a href="http://requirejs.org">RequireJS</a>,
+                            <a href="https://github.com/cujojs/curl">curl</a>,
+                            <a href="http://dojotoolkit.org/">Dojo</a>,
+                            <a href="https://github.com/linkedin/inject">inject</a>,
+                            <a href="https://github.com/zazl/lsjs">lsjs</a></li>
+                        <li>Small shims: <a href="https://github.com/jrburke/almond">almond</a>, cordova.js</li>
+                    </ul>
+                </section>
+
+                <!--section>
+                    <h2>Why not CommonJS</h2>
+
+                    <ul>
+                        <li>Needs eval</li>
+                        <li>No "built" format -- needs wrapper</li>
+                        <li>Hidden costs: Source/deploy mismatch, mandates build tools.</li>
+                        <li>No dynamic: <code>require([], function () {})</code></li>
+                        <li>No loader plugins: pyramid of doom, transpilers</li>
+                    </ul>
+
+                </section>
+
+                <section>
+                    <h2>CommonJS+RequireJS</h2>
+                    <p>CommonJS as sugary sugar.</p>
+                    <ul>
+                        <li>Dynamic: <a href="https://github.com/requirejs/cajon">cajon</a></li>
+                        <li>Builds: r.js <a href="https://github.com/jrburke/r.js/blob/master/build/example.build.js#L412">cjsTranslate: true</a>
+                            +
+                            <a href="https://github.com/jrburke/almond">almond</a></li>
+                    </ul>
+                </section -->
+
+                <section>
+                    <h2>AMD with Phonegap</h2>
+                    <ul>
+                        <li>Loader plugin for env</li>
+                        <li>Reusable components, one www codebase</li>
+                        <li>almond, or dynamic load</li>
                     </ul>
                 </section>
 
                 <section>
-                    <h2>Marvelous Unordered List</h2>
+                    <h2>Work in progress</h2>
+                    <p><a href="https://github.com/jrburke/talk-phonegap-201207/tree/master/code">One codebase example</a></p>
                     <ul>
-                        <li>No order here</li>
-                        <li>Or here</li>
-                        <li>Or here</li>
-                        <li>Or here</li>
+                        <li>Go with the flow, convention based layout, volo</li>
+                        <li>Needs an async cordova.js</li>
                     </ul>
-                </section>
-
-                <section>
-                    <h2>Fantastic Ordered List</h2>
-                    <ol>
-                        <li>One is smaller than...</li>
-                        <li>Two is smaller than...</li>
-                        <li>Three!</li>
-                    </ol>
-                </section>
-
-                <section>
-                    <section data-state="alert">
-                        <h2>Global State</h2>
-                        <p>
-                            Set <code>data-state="something"</code> on a slide and <code>"something"</code>
-                            will be added as a class to the document element when the slide is open. This let's you
-                            apply broader style changes, like switching the background.
-                        </p>
-                        <a href="#/7/1" class="image">
-                            <img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png">
-                        </a>
-                    </section>
-                    <section data-state="blackout">
-                        <h2>"blackout"</h2>
-                        <a href="#/7/2" class="image">
-                            <img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png">
-                        </a>
-                    </section>
-                    <section data-state="soothe">
-                        <h2>"soothe"</h2>
-                        <a href="#/7/0" class="image">
-                            <img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" style="-webkit-transform: rotate(180deg);">
-                        </a>
-                    </section>
-                </section>
-
-                <section data-state="customevent">
-                    <h2>Custom Events</h2>
-                    <p>
-                        Additionally custom events can be triggered on a per slide basis by binding to the <code>data-state</code> name.
-                    </p>
-                    <pre><code contenteditable style="font-size: 18px; margin-top: 20px;">Reveal.addEventListener( 'customevent', function() {
-    alert( '"customevent" has fired' );
-} );
-                    </code></pre>
-                </section>
-
-                <section>
-                    <h2>Clever Quotes</h2>
-                    <p>
-                        These guys come in two forms, inline: <q cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-                        The nice thing about standards is that there are so many to choose from</q> and block:
-                    </p>
-                    <blockquote cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-                        For years there has been a theory that millions of monkeys typing at random on millions of typewriters would
-                        reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.
-                    </blockquote>
-                </section>
-
-                <section>
-                    <h2>Pretty Code</h2>
-                    <pre><code contenteditable>
-function linkify( selector ) {
-  if( supports3DTransforms ) {
-
-    var nodes = document.querySelectorAll( selector );
-
-    for( var i = 0, len = nodes.length; i < len; i++ ) {
-      var node = nodes[i];
-
-      if( !node.className ) ) {
-        node.className += ' roll';
-      }
-    };
-  }
-}
-                    </code></pre>
-                    <p>Courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
-                </section>
-
-                <section>
-                    <h2>Intergalactic Interconnections</h2>
-                    <p>
-                        You can link between slides internally,<br/>
-                        <a href="#/2/3">like this</a>.
-                    </p>
-                </section>
-
-                <section>
-                    <h2>Fragmented Views</h2>
-                    <p>Hit the next arrow...</p>
-                    <p class="fragment">... to step through ...</p>
-                    <ol>
-                        <li class="fragment"><code>any type</code></li>
-                        <li class="fragment"><em>of view</em></li>
-                        <li class="fragment"><strong>fragments</strong></li>
-                    </ol>
-                </section>
-
-                <section>
-                    <h2>Spectacular image!</h2>
-                    <a class="image" href="http://hakim.se/experiments/html5/breakdom/" target="_blank">
-                        <img width="320" height="412" src="https://s3.amazonaws.com/hakim-static/reveal-js/breakdom.png">
-                    </a>
-                </section>
-
-                <section>
-                    <h2>Stellar Links</h2>
-                    <ul>
-                        <li><a href="https://github.com/hakimel/reveal.js">Source code on github</a></li>
-                        <li><a href="http://hakim.se/projects/reveal-js">Read more on my site</a></li>
-                        <li><a href="http://twitter.com/hakimel">Follow me on Twitter</a></li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h1>THE END</h1>
-                    <h3 class="inverted">BY Hakim El Hattab / hakim.se</h3>
                 </section>
             </div>
 
